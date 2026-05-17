@@ -1,0 +1,25 @@
+<h1 class="text-2xl mb-4">Order #<%= @order.id %></h1>
+
+<p><strong>Status:</strong> <%= @order.status %></p>
+<p><strong>Source:</strong> <%= @order.source %></p>
+<p><strong>External ID:</strong> <%= @order.external_id %></p>
+<p><strong>Customer:</strong> <%= @order.customer_name %> (<%= @order.customer_email %>)</p>
+<p><strong>Address:</strong> <%= @order.delivery_address %></p>
+
+<div class="mt-4 flex gap-3">
+  <% if policy(@order).update? %>
+    <%= link_to "Edit", edit_admin_order_path(@order), class: "underline" %>
+  <% end %>
+
+  <% if policy(@order).cancel? %>
+    <%= button_to "Cancel", cancel_admin_order_path(@order), method: :patch %>
+  <% end %>
+
+  <% if policy(@order).update? && @order.failed? %>
+    <%= button_to "Retry", retry_admin_order_path(@order), method: :post %>
+  <% end %>
+
+  <% if policy(@order).destroy? %>
+    <%= button_to "Soft delete", admin_order_path(@order), method: :delete %>
+  <% end %>
+</div>

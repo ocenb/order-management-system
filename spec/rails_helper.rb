@@ -8,6 +8,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
+require 'devise'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -62,8 +63,8 @@ RSpec.configure do |config|
   # /spec/models would pull in the same behaviour as `type: :model` but this
   # behaviour is considered legacy and will be removed in a future version.
   #
-  # To enable this behaviour uncomment the line below.
-  # config.infer_spec_type_from_file_location!
+  config.infer_spec_type_from_file_location!
+  config.include Devise::Test::IntegrationHelpers, type: :request
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!

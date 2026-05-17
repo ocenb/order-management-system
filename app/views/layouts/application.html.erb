@@ -24,8 +24,28 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+    <div class="container mx-auto px-5 py-6">
+      <% if user_signed_in? %>
+        <div class="mb-4 flex gap-4 items-center">
+          <%= link_to "Orders", admin_orders_path, class: "underline" %>
+          <% if current_user.admin? %>
+            <%= link_to "Users", admin_users_path, class: "underline" %>
+          <% end %>
+          <span class="text-sm text-gray-600">Signed in as <%= current_user.email %> (<%= current_user.role %>)</span>
+          <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "underline" %>
+        </div>
+      <% end %>
+
+      <% if notice.present? %>
+        <p class="mb-2 text-green-700"><%= notice %></p>
+      <% end %>
+      <% if alert.present? %>
+        <p class="mb-2 text-red-700"><%= alert %></p>
+      <% end %>
+
+      <main>
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>

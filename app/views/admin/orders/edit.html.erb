@@ -1,0 +1,17 @@
+<h1 class="text-2xl mb-4">Edit order #<%= @order.id %></h1>
+
+<%= form_with model: [:admin, @order], local: true do |f| %>
+  <div class="mb-3">
+    <%= f.label :status %><br>
+    <%= f.select :status, Order::STATUSES.values %>
+  </div>
+
+  <% if current_user.manager? || current_user.admin? %>
+    <div class="mb-3">
+      <%= f.label :delivery_address %><br>
+      <%= f.text_area :delivery_address, rows: 3, class: "w-full border" %>
+    </div>
+  <% end %>
+
+  <%= f.submit "Save", class: "border px-3 py-1" %>
+<% end %>

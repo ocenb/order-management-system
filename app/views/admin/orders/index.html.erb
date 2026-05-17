@@ -1,0 +1,24 @@
+<h1 class="text-2xl mb-4">Orders</h1>
+
+<table class="min-w-full border">
+  <thead>
+    <tr>
+      <th class="border px-2 py-1 text-left">ID</th>
+      <th class="border px-2 py-1 text-left">Source</th>
+      <th class="border px-2 py-1 text-left">External ID</th>
+      <th class="border px-2 py-1 text-left">Status</th>
+      <th class="border px-2 py-1 text-left">Customer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td class="border px-2 py-1"><%= link_to order.id, admin_order_path(order), class: "underline" %></td>
+        <td class="border px-2 py-1"><%= order.source %></td>
+        <td class="border px-2 py-1"><%= order.external_id %></td>
+        <td class="border px-2 py-1"><%= order.status %></td>
+        <td class="border px-2 py-1"><%= order.customer_email %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

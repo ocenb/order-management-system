@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users, skip: [:registrations]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -9,8 +10,18 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  namespace :admin do
+    resources :orders, only: %i[index show edit update destroy] do
+      member do
+        patch :cancel
+        post :retry
+      end
+    end
+    resources :users, only: %i[index update]
+  end
+
+  root "admin/orders#index"
+
   namespace :api do
     namespace :v1 do
       resources :orders, only: %i[create show]
