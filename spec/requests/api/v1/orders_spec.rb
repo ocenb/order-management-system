@@ -1,7 +1,8 @@
 require "rails_helper"
+require "securerandom"
 
 RSpec.describe "Api::V1::Orders", type: :request do
-  let(:raw_token) { "secret-token" }
+  let(:raw_token) { "secret-token-#{SecureRandom.hex(8)}" }
   let!(:api_token) { ApiToken.create!(name: "default", token_digest: ApiToken.digest(raw_token), active: true) }
   let(:headers) { { "Authorization" => "Bearer #{raw_token}" } }
 

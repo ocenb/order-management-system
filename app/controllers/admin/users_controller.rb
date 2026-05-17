@@ -10,7 +10,9 @@ module Admin
     def update
       authorize @user
 
-      if @user.update(user_params)
+      @user.role = user_role_param
+
+      if @user.save
         redirect_to admin_users_path, notice: "User updated."
       else
         @users = policy_scope(User).order(:email)
@@ -24,8 +26,9 @@ module Admin
       @user = User.find(params[:id])
     end
 
-    def user_params
-      params.require(:user).permit(:role)
+    def user_role_param
+      role = params.require(:user).fetch(:role)
+      User::ROLES.value?(role) ? role : nil
     end
   end
 end

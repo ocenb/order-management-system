@@ -1,4 +1,5 @@
 require "rails_helper"
+require "securerandom"
 
 RSpec.describe "Admin::Orders", type: :request do
   let(:order) do
@@ -13,9 +14,9 @@ RSpec.describe "Admin::Orders", type: :request do
     )
   end
 
-  let(:operator) { User.create!(email: "operator@example.com", password: "Password1!", role: :operator) }
-  let(:manager) { User.create!(email: "manager@example.com", password: "Password1!", role: :manager) }
-  let(:admin) { User.create!(email: "admin@example.com", password: "Password1!", role: :admin) }
+  let(:operator) { User.create!(email: "operator-#{SecureRandom.hex(4)}@example.com", password: "Password1!", role: :operator) }
+  let(:manager) { User.create!(email: "manager-#{SecureRandom.hex(4)}@example.com", password: "Password1!", role: :manager) }
+  let(:admin) { User.create!(email: "admin-#{SecureRandom.hex(4)}@example.com", password: "Password1!", role: :admin) }
 
   it "requires authentication" do
     get admin_orders_path
