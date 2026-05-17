@@ -1,7 +1,11 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  devise_for :users, skip: [:registrations]
+  if Rails.env.development? && defined?(Rswag::Api) && defined?(Rswag::Ui)
+    mount Rswag::Api::Engine => "/api-docs"
+    mount Rswag::Ui::Engine => "/docs"
+  end
+  devise_for :users, skip: [ :registrations ]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

@@ -28,7 +28,7 @@ RSpec.describe "Order flow E2E", type: :request do
         delivery_address: "Old address",
         total_amount: "50.00",
         currency: "USD",
-        items: [{ sku: "SKU-1", name: "Item 1", quantity: 1, price: "50.00" }]
+        items: [ { sku: "SKU-1", name: "Item 1", quantity: 1, price: "50.00" } ]
       }
     }
 

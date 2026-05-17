@@ -1,0 +1,113 @@
+---
+openapi: 3.0.3
+info:
+  title: Order Management API V1
+  version: v1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+- bearerAuth: []
+paths:
+  "/api/v1/orders":
+    post:
+      summary: Create order
+      tags:
+      - Orders
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: order created
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: object
+                  required:
+                  - source
+                  - external_id
+                  - customer_email
+                  - customer_name
+                  - delivery_address
+                  - total_amount
+                  - currency
+                  - items
+                  properties:
+                    source:
+                      type: string
+                      example: shop
+                    external_id:
+                      type: string
+                      example: ext-100
+                    customer_email:
+                      type: string
+                      format: email
+                      example: john@example.com
+                    customer_name:
+                      type: string
+                      example: John
+                    delivery_address:
+                      type: string
+                      example: Main st 1
+                    total_amount:
+                      type: string
+                      example: '199.90'
+                    currency:
+                      type: string
+                      example: USD
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - sku
+                        - name
+                        - quantity
+                        - price
+                        properties:
+                          sku:
+                            type: string
+                            example: SKU-1
+                          name:
+                            type: string
+                            example: Item 1
+                          quantity:
+                            type: integer
+                            example: 2
+                          price:
+                            type: string
+                            example: '99.95'
+              required:
+              - order
+  "/api/v1/orders/{id}":
+    get:
+      summary: Show order status
+      tags:
+      - Orders
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: order found
+        '401':
+          description: unauthorized
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
