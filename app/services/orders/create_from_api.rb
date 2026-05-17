@@ -21,6 +21,8 @@ module Orders
         created_order.order_status_events.create!(from_status: nil, to_status: :pending)
       end
 
+      created_order.enqueue_processing!
+
       Result.new(order: created_order, created: true)
     rescue ActiveRecord::RecordNotUnique
       # Idempotency race: if another transaction inserted first, return persisted record.

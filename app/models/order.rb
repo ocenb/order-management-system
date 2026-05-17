@@ -52,4 +52,14 @@ class Order < ApplicationRecord
       )
     end
   end
+
+  def enqueue_processing!
+    ProcessOrderJob.perform_later(id)
+  end
+
+  def retry_processing!
+    raise InvalidStatusTransition, "Retry is allowed only for failed orders" unless failed?
+
+    enqueue_processing!
+  end
 end

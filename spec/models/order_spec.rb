@@ -22,4 +22,14 @@ RSpec.describe Order, type: :model do
     expect { order.transition_to!(:completed) }
       .to raise_error(Order::InvalidStatusTransition)
   end
+
+  it "allows manual retry only for failed" do
+    expect { order.retry_processing! }
+      .to raise_error(Order::InvalidStatusTransition)
+
+    order.transition_to!(:processing)
+    order.transition_to!(:failed)
+
+    expect { order.retry_processing! }.not_to raise_error
+  end
 end
