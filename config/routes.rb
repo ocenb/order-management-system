@@ -1,3 +1,5 @@
+require "sidekiq/web"
+
 Rails.application.routes.draw do
   devise_for :users, skip: [:registrations]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -18,6 +20,10 @@ Rails.application.routes.draw do
       end
     end
     resources :users, only: %i[index update]
+  end
+
+  authenticate :user, ->(user) { user.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
   end
 
   root "admin/orders#index"
