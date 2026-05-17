@@ -51,6 +51,8 @@ class Order < ApplicationRecord
         reason: reason
       )
     end
+
+    enqueue_completed_email! if target == :completed
   end
 
   def enqueue_processing!
@@ -61,5 +63,9 @@ class Order < ApplicationRecord
     raise InvalidStatusTransition, "Retry is allowed only for failed orders" unless failed?
 
     enqueue_processing!
+  end
+
+  def enqueue_completed_email!
+    SendOrderCompletedEmailJob.perform_later(id)
   end
 end

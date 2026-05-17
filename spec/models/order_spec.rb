@@ -1,6 +1,17 @@
 require "rails_helper"
 
 RSpec.describe Order, type: :model do
+  include ActiveJob::TestHelper
+
+  around do |example|
+    original_adapter = ActiveJob::Base.queue_adapter
+    ActiveJob::Base.queue_adapter = :test
+    clear_enqueued_jobs
+    example.run
+    clear_enqueued_jobs
+    ActiveJob::Base.queue_adapter = original_adapter
+  end
+
   let(:order) do
     described_class.create!(
       source: "shop",
@@ -21,6 +32,14 @@ RSpec.describe Order, type: :model do
   it "rejects transition pending -> completed" do
     expect { order.transition_to!(:completed) }
       .to raise_error(Order::InvalidStatusTransition)
+  end
+
+  it "enqueues completed email job on transition to completed" do
+    order.transition_to!(:processing)
+
+    expect do
+      order.transition_to!(:completed)
+    end.to have_enqueued_job(SendOrderCompletedEmailJob).with(order.id)
   end
 
   it "allows manual retry only for failed" do

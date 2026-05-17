@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_17_123000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_17_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_17_123000) do
 
   create_table "orders", force: :cascade do |t|
     t.text "cancel_reason"
+    t.datetime "completed_email_sent_at"
     t.datetime "created_at", null: false
     t.string "currency", default: "USD", null: false
     t.string "customer_email", null: false
@@ -60,6 +61,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_17_123000) do
     t.string "status", default: "pending", null: false
     t.decimal "total_amount", precision: 12, scale: 2, null: false
     t.datetime "updated_at", null: false
+    t.index ["completed_email_sent_at"], name: "index_orders_on_completed_email_sent_at"
     t.index ["deleted_at"], name: "index_orders_on_deleted_at"
     t.index ["source", "external_id"], name: "index_orders_on_source_and_external_id", unique: true
     t.index ["status"], name: "index_orders_on_status"
