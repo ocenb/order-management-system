@@ -51,7 +51,7 @@ Backend-сервис для операционного управления за
 cp .env.example .env
 ```
 
-1. Убедитесь, что в `.env` выставлены контейнерные хосты:
+2. Убедитесь, что в `.env` выставлены контейнерные хосты:
 
 ```env
 DB_HOST=postgres
@@ -59,7 +59,7 @@ DB_PORT=5432
 REDIS_URL=redis://redis:6379/0
 ```
 
-1. Поднимите инфраструктуру и приложение:
+3. Поднимите инфраструктуру и приложение:
 
 ```bash
 bin/rake docker:dev_infra_up
@@ -67,7 +67,7 @@ bin/rake docker:dev_web_up
 bin/rake docker:dev_worker_up
 ```
 
-1. Подготовьте БД и загрузите seed:
+4. Подготовьте БД и загрузите seed:
 
 ```bash
 bin/rake db:prepare
